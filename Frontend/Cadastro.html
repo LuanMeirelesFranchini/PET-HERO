@@ -10,12 +10,12 @@
     <div class="container">
         <div class="caixa-de-login">
             <h2>Acessar sua Conta</h2>
-            <form action="#">
+            <form id="login-form">
                 <label for="email">E-mail ou CPF</label>
-                <input type="texto" id="email" name="email" placeholder="Digite seu e-mail ou CPF">
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail ou CPF" required>
                 
                 <label for="senha">Senha</label>
-                <input type="senha" id="senha" name="senha" placeholder="Digite sua senha de acesso">
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha de acesso" required>
                 
                 <button type="submit">Entrar</button>
             </form>
@@ -31,8 +31,57 @@
                 <li>Filtrar por tamanho, idade e raça</li>
                 <li>Conectar-se com abrigos locais</li>
             </ul>
-            <button type="button">Criar minha conta</button>
+            <button type="button" onclick="showCadastroForm()">Criar minha conta</button>
+        </div>
+
+        <!-- Formulário de cadastro -->
+        <div id="cadastro-form" style="display: none;">
+            <h3>Cadastro de Usuário</h3>
+            <form id="cadastro-form">
+                <label for="cad-email">E-mail</label>
+                <input type="email" id="cad-email" name="email" placeholder="Digite seu e-mail" required>
+                
+                <label for="cad-senha">Senha</label>
+                <input type="password" id="cad-senha" name="senha" placeholder="Digite sua senha" required>
+                
+                <button type="submit">Cadastrar</button>
+            </form>
         </div>
     </div>
+
+    <script>
+        // Exibe o formulário de cadastro
+        function showCadastroForm() {
+            document.getElementById('cadastro-form').style.display = 'block';
+        }
+
+        // Envia o formulário de cadastro para a API
+        document.getElementById('cadastro-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('cad-email').value;
+            const senha = document.getElementById('cad-senha').value;
+
+            // Enviar dados para o backend via API
+            fetch('http://localhost:3000/api/usuarios/cadastro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, senha })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    alert('Erro: ' + data.error);
+                }
+            })
+            .catch(err => {
+                alert('Erro ao enviar dados: ' + err);
+            });
+        });
+    </script>
 </body>
 </html>
