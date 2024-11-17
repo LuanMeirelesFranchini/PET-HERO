@@ -18,7 +18,6 @@ module.exports = {
         const { nome, especie, raca, idade, sexo, vacinado, castrado, descricao, status_disponivel, ong_responsavel_id } = req.body;
 
         // Verifica se o animal já existe
-        // Verifica se o animal já existe
         db.get(
             `SELECT * FROM Animais WHERE nome = ? AND especie = ? AND raca = ? AND sexo = ?`,
             [nome, especie, raca, sexo],
